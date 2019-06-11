@@ -46,9 +46,12 @@ encoder = preprocessing.LabelEncoder()
 train_y = encoder.fit_transform(train_y)
 valid_y = encoder.fit_transform(valid_y)
 
+pickle.dump(encoder, open('encoder.pkl' ,'wb'))
+
 # create a count vectorizer object 
 count_vect = CountVectorizer(analyzer='word', token_pattern=r'\w{1,}')
 count_vect.fit(cdf['text'])
+pickle.dump(count_vect, open('count_vect.pkl' ,'wb'))
 
 # transform the training and validation data using count vectorizer object
 xtrain_count =  count_vect.transform(train_x)
@@ -83,6 +86,7 @@ def train_model(model_name,clf, x_train, y_train, x_test, y_test, verbose=False)
     if verbose:
         # Saving model to disk
         pickle.dump(clf, open('model_%s.pkl' % model_name ,'wb'))
+
         tweet = "This is a tweet about Science and Technology, wow!"
         print("Predicting tweet: {}".format(tweet))
         custom_pred = clf.predict(count_vect.transform([tweet]))
