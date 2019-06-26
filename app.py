@@ -14,6 +14,24 @@ svm = pickle.load(open('./Model/model_svm.pkl','rb'))
 count_vect = pickle.load(open('./Model/count_vect.pkl','rb'))
 encoder = pickle.load(open('./Model/encoder.pkl','rb'))
 
+
+def majorityVotingPredictor(inputX):
+    NBPredict = naive_bayes.predict(count_vect.transform([inputX]))
+    SVCPredict = svm.predict(count_vect.transform([inputX]))
+    LRPredict = linear_model.predict(count_vect.transform([inputX]))
+    
+    if NBPredict == LRPredict and NBPredict == SVCPredict:
+        finalPred = NBPredict
+    elif NBPredict == LRPredict or NBPredict == SVCPredict:
+        finalPred = NBPredict
+    elif LRPredict == SVCPredict:
+        finalPred = LRPredict
+    else:
+        finalPred = SVCPredict
+    
+    return encoder.inverse_transform(finalPred)
+
+    
 @app.route('/api',methods=['POST'])
 def predict():
     data = request.get_json(force=True)
@@ -26,8 +44,10 @@ def predict():
     naive_bayes_result = encoder.inverse_transform(prediction2)
     prediction3 = svm.predict(count_vect.transform([data['tweet']]))
     svm_result = encoder.inverse_transform(prediction3)
+    majorityVotingResult = majorityVotingPredictor(data['tweet'])
+    print(majorityVotingResult[0])
 
-    results = { "svm": svm_result[0] , "naive_bayes": naive_bayes_result[0] , "linear_model": linear_model_result[0]}
+    results = { "svm": svm_result[0] , "naive_bayes": naive_bayes_result[0] , "linear_model": linear_model_result[0], "majorityVotingResult" : majorityVotingResult[0]}
     # results = { "svm": svm_result.tolist() , "naive_bayes": naive_bayes_result.tolist() , "linear_model": linear_model_result.tolist()}
     y = json.dumps(results)
     # class MyClass:
