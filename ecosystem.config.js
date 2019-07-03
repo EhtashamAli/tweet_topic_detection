@@ -1,7 +1,8 @@
 module.exports = {
   apps : [{
-    name: 'echo-python',
+    name: 'App',
     cmd: 'app.py',
+    interpreter: 'python3',
     autorestart: false,
     watch: true,
     instances: 1,
@@ -12,10 +13,6 @@ module.exports = {
     env_production : {
       ENV: 'production'
     }
-  }, {
-    name: 'echo-python-3',
-    cmd: 'app.py',
-    interpreter: 'python3'
   }]
 };
 
