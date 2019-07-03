@@ -13,6 +13,7 @@ import pandas as pd
 import gensim
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from sklearn import model_selection, preprocessing, linear_model, naive_bayes, metrics, svm
+from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 
@@ -126,14 +127,20 @@ print ("~ Using Logistic Regression ~ ")
 accuracySVC = train_model('linear_model',linear_model.LogisticRegression(C=1.0, solver='lbfgs', multi_class='multinomial'), xtrain_count, train_y, xvalid_count, valid_y, verbose=True)
 print ("Accuracy: {}%".format(round(accuracySVC*100, 3)))
 
-
-plt.style.use('ggplot')
-plt.plot(ALPHAS, NBvalues,'r', label="Naive Bayes")
-plt.plot(ALPHAS, SVCvalues, 'g', label="LinearSVC")
-plt.plot(ALPHAS, LogRegvalues, 'b', label="Log Reg")
-plt.legend()
-plt.xlabel("ALPHAS")
-plt.ylabel("Accuracy")
+#RF
+print()
+print ("~ Using Random Forest Classifier ~")
+accuracyRF = train_model('RF', RandomForestClassifier(n_estimators=500, max_depth=200, random_state=0), xtrain_count, train_y, xvalid_count, valid_y, verbose=True)
+print ("Accuracy: {}%".format(round(accuracyRF*100, 3)))
 
 
-plt.show()
+# plt.style.use('ggplot')
+# plt.plot(ALPHAS, NBvalues,'r', label="Naive Bayes")
+# plt.plot(ALPHAS, SVCvalues, 'g', label="LinearSVC")
+# plt.plot(ALPHAS, LogRegvalues, 'b', label="Log Reg")
+# plt.legend()
+# plt.xlabel("ALPHAS")
+# plt.ylabel("Accuracy")
+
+
+# plt.show()
