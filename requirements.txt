@@ -214,7 +214,7 @@ tweepy==3.7.0
 twitter==1.18.0
 ujson==1.35
 unicodecsv==0.14.1
-urllib3==1.24.1
+urllib3==1.26.5
 virtualenv==16.5.0
 wcwidth==0.1.7
 webencodings==0.5.1
